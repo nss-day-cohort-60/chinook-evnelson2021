@@ -5,4 +5,4 @@ FROM InvoiceLine
     JOIN Album
         ON Album.AlbumId = Track.AlbumId
     JOIN Artist
-        ON Artist.ArtistId = Album.ArtistId
+        ON Artist.ArtistId = Album.Artist
