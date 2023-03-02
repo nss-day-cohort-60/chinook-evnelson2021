@@ -16,6 +16,8 @@ GROUP BY
 ORDER BY
 	PurchaseCount DESC
 
+    
+
 -- FROM STEVE - Common Table Expression
 
 WITH TopTracks AS (
@@ -39,10 +41,38 @@ Top2Tracks AS(
         ) = PurchaseCount
 )
 
-
 -- -Just testing for multiple CTEs
 
 select Name,
     PurchaseCount
 from Top2Tracks
 where Name LIKE "E%"
+
+
+-- From Coach - How to do it with subqueries
+select 
+	TrackCounts.Name, 
+	TrackCounts.PurchaseCount
+from (
+	select t.Name, count(t.Name) as PurchaseCount
+			from Track t
+            join InvoiceLine l on l.TrackId = t.TrackId
+			join Invoice i on l.InvoiceId = i.InvoiceId
+			where STRFTIME('%Y', i.InvoiceDate) = "2013"
+            group by t.Name
+    ) TrackCounts 
+	join
+    (
+		select max(PurchaseCount) as MaxCount
+    from (
+			select t.Name, count(t.Name) as PurchaseCount
+			from Track t
+            join InvoiceLine l on l.TrackId = t.TrackId
+			join Invoice i on l.InvoiceId = i.InvoiceId
+			where STRFTIME('%Y', i.InvoiceDate) = "2013"
+            group by t.Name
+			order by PurchaseCount desc
+        ) TrackCounts
+    ) Maxx
+    on TrackCounts.PurchaseCount = Maxx.MaxCount
+	;
