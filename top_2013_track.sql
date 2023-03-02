@@ -16,9 +16,9 @@ GROUP BY
 ORDER BY
 	PurchaseCount DESC
 
-    
 
--- FROM STEVE - Common Table Expression
+
+-- FROM STEVE - Common Table Expressions
 
 WITH TopTracks AS (
     SELECT t.Name,
